@@ -23,7 +23,17 @@ typedef struct {
   cmd_struct* cmds[];
 } pipe_cmd_struct;
 
+
+//Funcion que retorna 1 si hay algun ">" en str,
+//retorna 2 si existe si hay algun "<" en str y retorna 0 en otro caso
 int hay_redirect(char* str);
+
+
+
+void parse_redirect(char *str, char **arreglo);
+
+
+//Obtiene la siguiente cadena usando omitiendo los espacios
 char* sig_cadena(char **line);
  //Convierte una cadena en una estructua del tipo comando.
  //Los fd se ponen por default a -1

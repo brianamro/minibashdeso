@@ -56,6 +56,20 @@ pipe_cmd_struct* parse_pipeline(char *str) {
     return ret;
 }
 
+void parse_redirect(char *str, char **arreglo){
+    char *tok;
+    char *copy;
+    copy =  strdup(str);
+    int i = 0;
+    while(((tok = strsep(&copy, "><")) != NULL) ) {
+        if(strcmp(tok, "")!=0){
+            arreglo[i] = tok;
+            i++;
+        }
+    }
+}
+
+
 int hay_redirect(char* str){
     for(int i = 0; i < MAX_LEN; i++){
         if(str[i]=='>') return 1;
@@ -63,28 +77,31 @@ int hay_redirect(char* str){
     }
 }
 
-void print_command(cmd_struct* command) {
-    char** arg = command->args;
-    int i = 0;
-
-    fprintf(stderr, "progname: %s\n", command->progname);
-
-    for (i = 0, arg = command->args; *arg; ++arg, ++i) {
-        fprintf(stderr, " args[%d]: %s\n", i, *arg);
-    }
-}
 
 
-void print_pipeline(pipe_cmd_struct* pipeline) {
-    cmd_struct** cmd = pipeline->cmds;
-    int i = 0;
 
-    fprintf(stderr, "n_cmds: %d\n", pipeline->n_cmds);
-
-    for (i = 0; i < pipeline->n_cmds; ++i) {
-        fprintf(stderr, "cmds[%d]:\n", i);
-        print_command(cmd[i]);
-    }
-}
+//void print_command(cmd_struct* command) {
+//    char** arg = command->args;
+//    int i = 0;
+//
+//    fprintf(stderr, "progname: %s\n", command->progname);
+//
+//    for (i = 0, arg = command->args; *arg; ++arg, ++i) {
+//        fprintf(stderr, " args[%d]: %s\n", i, *arg);
+//    }
+//}
+//
+//
+//void print_pipeline(pipe_cmd_struct* pipeline) {
+//    cmd_struct** cmd = pipeline->cmds;
+//    int i = 0;
+//
+//    fprintf(stderr, "n_cmds: %d\n", pipeline->n_cmds);
+//
+//    for (i = 0; i < pipeline->n_cmds; ++i) {
+//        fprintf(stderr, "cmds[%d]:\n", i);
+//        print_command(cmd[i]);
+//    }
+//}
 
 

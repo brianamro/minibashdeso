@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/minibash.dir/shell.c.o CMakeFiles/minibash.dir/utils.c.o  -o minibash 

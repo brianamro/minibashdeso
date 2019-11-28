@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/brian/Escritorio/el bueno/shell.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/wait.h
+-
+unistd.h
+-
+utils.h
+/home/brian/Escritorio/el bueno/utils.h
+
+/home/brian/Escritorio/el bueno/utils.h
+

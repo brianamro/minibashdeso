@@ -54,38 +54,29 @@ int main() {
         //Imprimimos el mensaje inicial
         printf("\nHoli:3 >>@ ");
         fgets(linea, MAX_LEN, stdin);
-        int red = hay_redirect(linea);
-        if(red == 1){
-            
+        pipe_cmd_struct* pipeline = parse_pipeline(linea);
+        int n_pipes = pipeline->n_cmds - 1;
+        print_pipeline(pipeline);
+
+        //Pipes[i] redirige los fd de pipeline->cmds[i] a pipeline->cmds[i+1]
+        int (*pipes)[2] = calloc(sizeof(int[2]), n_pipes);
+
+        for (int i = 1; i < pipeline->n_cmds; ++i) {
+            pipe(pipes[i-1]);
+            pipeline->cmds[i]->redirect[STDIN_FILENO] = pipes[i-1][0];
+            pipeline->cmds[i-1]->redirect[STDOUT_FILENO] = pipes[i-1][1];
         }
-        printf("red = %d\n", red);
-//        char *copy;
-//        copy =  strdup(linea);
-//        while((tok = strsep(&copy, "> <")) != NULL)
-//            printf("parsed: %s\n", tok);
-//        pipe_cmd_struct* pipeline = parse_pipeline(linea);
-//        int n_pipes = pipeline->n_cmds - 1;
-//        print_pipeline(pipeline);
-//
-//        //Pipes[i] redirige los fd de pipeline->cmds[i] a pipeline->cmds[i+1]
-//        int (*pipes)[2] = calloc(sizeof(int[2]), n_pipes);
-//
-//        for (int i = 1; i < pipeline->n_cmds; ++i) {
-//            pipe(pipes[i-1]);
-//            pipeline->cmds[i]->redirect[STDIN_FILENO] = pipes[i-1][0];
-//            pipeline->cmds[i-1]->redirect[STDOUT_FILENO] = pipes[i-1][1];
-//        }
-//
-//        for (int i = 0; i < pipeline->n_cmds; ++i) {
-//            run_with_redir(pipeline->cmds[i], n_pipes, pipes);
-//        }
-//
-//        cerrar_tuberias(n_pipes, pipes);
-//
-//        //Esperamos a que todos los hijos acaben
-//        for (int i = 0; i < pipeline->n_cmds; ++i) {
-//            wait(NULL);
-//        }
-//
+
+        for (int i = 0; i < pipeline->n_cmds; ++i) {
+            run_with_redir(pipeline->cmds[i], n_pipes, pipes);
+        }
+
+        cerrar_tuberias(n_pipes, pipes);
+
+        //Esperamos a que todos los hijos acaben
+        for (int i = 0; i < pipeline->n_cmds; ++i) {
+            wait(NULL);
+        }
+
     }
 }
